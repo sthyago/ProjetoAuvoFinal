@@ -1,0 +1,191 @@
+<nav class="navbar" style="width: 100%; background-color: purple; margin-left: 0px"> 
+  <label style="font-size: 20px; font-weight: bold; position: absolute; color: white;">Auvo</label>
+  <a  class="nav-item" style="margin-left: 70px; color: lightgray;">Clientes</a>
+</nav> 
+<div class="app-container" style="padding-left: 20px; margin-top: 5px;">
+  <div class="row" style="width: 100%">
+    <div class="fieldset-info" style="margin-right: 5px; width: 23%;">
+      <label style="margin-top: 10px"> <img src="../assets/images/company.png">  {{entidade.nome}}</label> <br> 
+      <label style="margin-top: 15px"> <img src="../assets/images/old-typical-phone.png"> {{entidade.telefone}}</label> <br>
+      <label style="margin-top: 15px"> <img src="../assets/images/black-back-closed-envelope-shape.png"> {{entidade.email}}</label> <br>
+      <label style="margin-top: 15px">
+         <img src="../assets/images/direction-signs.png">
+         {{entidade.endereco.rua}}, nº {{entidade.endereco.numero}}, {{entidade.endereco.bairro}} <br>
+         CEP: {{entidade.endereco.cep}}, {{entidade.endereco.cidade}} - {{entidade.endereco.estado}}
+      </label>
+      <label style="font-weight: bold; margin-top: 20px; width: 100%; text-align: center; color: blue;">Mais informações:</label> 
+      <div style="font-size: 12px; color: grey; font-weight: bold;">
+        <label>Seguimento: <br> {{entidade.seguimento}}</label> <br>
+        <label style="margin-right: 10px">CPF/CNPJ:</label> {{entidade.cpfCnpj}} <br>
+        <label style="margin-right: 10px">Código no sistema:</label> {{entidade.id}} <br>  
+      </div>
+    
+    </div>
+    <div class="fieldset-info" style="margin-right: 5px; width: 50%;">
+      <label style="font-weight: bold; text-decoration: underline; color: blue; width: 100%; text-align: left; margin-top: 10px;">Tarefas</label>   
+      <label style="font-weight: bold; color: blue; width: 100%; text-align: left; margin-top: 10px;">Abertas</label>   
+      <!----------------------------------------->
+      <!---------- TABLE ABERTOS----------------->
+      <!----------------------------------------->
+      <mat-table [dataSource]="listaAbertos" class="mat-elevation-z8">
+        <!-- ID/Code Column -->
+        <ng-container matColumnDef="codigo">
+          <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.codigo}} </mat-cell>
+        </ng-container>
+      
+        <!-- Tipo de tarefa Column -->
+        <ng-container matColumnDef="typeTask">
+          <mat-header-cell *matHeaderCellDef> Tipo de tarefa </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.typeTask}} </mat-cell>
+        </ng-container>
+      
+        <!-- Data de execução Column -->
+        <ng-container matColumnDef="dateExecution">
+          <mat-header-cell *matHeaderCellDef> Data de execução </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.dateExecution}} </mat-cell>
+        </ng-container>
+      
+        <!-- Colaborador Column -->
+        <ng-container matColumnDef="colaborador">
+          <mat-header-cell *matHeaderCellDef> Colaborador </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.colaborador}} </mat-cell>
+        </ng-container>
+
+        <!-- Excluir Column -->
+        <ng-container matColumnDef="excluir">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element"> 
+            <img src="../assets/images/trash-can.png"> 
+          </mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <!----------------------------------------->
+      <!---------- TABLE FECHADOS --------------->
+      <!----------------------------------------->
+      <label style="font-weight: bold; color: blue; width: 100%; text-align: left; margin-top: 10px;">Fechadas</label>   
+      
+      <mat-table [dataSource]="listaFechados" class="mat-elevation-z8">
+        <!-- ID/Code Column -->
+        <ng-container matColumnDef="codigo">
+          <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.codigo}} </mat-cell>
+        </ng-container>
+      
+        <!-- Tipo de tarefa Column -->
+        <ng-container matColumnDef="typeTask">
+          <mat-header-cell *matHeaderCellDef> Tipo de tarefa </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.typeTask}} </mat-cell>
+        </ng-container>
+      
+        <!-- Data de execução Column -->
+        <ng-container matColumnDef="dateExecution">
+          <mat-header-cell *matHeaderCellDef> Data de execução </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.dateExecution}} </mat-cell>
+        </ng-container>
+      
+        <!-- Colaborador Column -->
+        <ng-container matColumnDef="colaborador">
+          <mat-header-cell *matHeaderCellDef> Colaborador </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.colaborador}} </mat-cell>
+        </ng-container>
+
+        <!-- Excluir Column -->
+        <ng-container matColumnDef="excluir">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element"> 
+            <button class="btn btn-info">...</button> 
+          </mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+    <div style="width: 23%">
+      <!----------------------------------------->
+      <!-------------- EDITAR CONTATO ----------->
+      <!----------------------------------------->
+      <div class="fieldset-info" *ngIf="appService.isEditarContato" style="margin-bottom: 5px">
+        <div style="background-color: white; border-radius: 6px;">
+          <label style="font-weight: bold; color: blue; width: 100%; text-align: left; margin-top: 10px;">Editar contato</label>
+
+          <div class="col-md-12">
+            <mat-form-field style="width: calc(100%); margin-right: 5px;">
+              <input matInput placeholder="Nome"
+                     [(ngModel)]="entidadeContato.name">
+            </mat-form-field>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field style="width: calc(100%); margin-right: 5px;">
+              <input matInput placeholder="Cargo"
+                     [(ngModel)]="entidadeContato.cargo">
+            </mat-form-field>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field style="width: calc(100%); margin-right: 5px;">
+              <input matInput placeholder="Telefone"
+                     [(ngModel)]="entidadeContato.telefone">
+            </mat-form-field>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field style="width: calc(100%); margin-right: 5px;">
+              <input matInput placeholder="E-mail"
+                     [(ngModel)]="entidadeContato.email">
+            </mat-form-field>
+          </div>
+
+          <div style="padding-left: 35px; margin-bottom: 5px;">
+            <button class="btn btn-success" style="font-weight: bold;" (click)="doEditarService()">Salvar</button>
+            <button class="btn btn-danger" (click)="fecharEdicao()"
+                    style="font-weight: bold; margin-left: 15px;">
+              Voltar
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="fieldset-info" style="width: 100%">
+
+        <!----------------------------------------->
+        <!-------------- CONTATO ------------------>
+        <!----------------------------------------->
+        <label style="font-weight: bold; color: blue; width: 100%; text-align: left; margin-top: 10px;">Contatos</label>
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+
+        <mat-table mat-table [dataSource]="dataSourceContato" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="contato">
+            <mat-header-cell mat-header-cell *matHeaderCellDef> Contato </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element" style="padding-left: 5px">
+                  {{element.name}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element"style="margin-left: 15px">
+              <button class="btn-warning" (click)="openCloseInfo(element)">Editar</button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsCtt"></mat-header-row>
+          <mat-row mat-row *matRowDef="let row; columns: displayedColumnsCtt;"></mat-row>
+
+          <!-- Row shown when there is no matching data.-->
+          <mat-row class="mat-row" *matNoDataRow>
+            <mat-cell class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</mat-cell>
+          </mat-row>
+        </mat-table>
+
+      </div>
+    </div>    
+  </div>
+</div>
+
